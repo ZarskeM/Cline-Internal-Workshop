@@ -9,9 +9,7 @@ This initial version keeps the scope intentionally simple:
 - preview the raw table as loaded
 - view basic summary information (row count, column count, column names)
 
-> Note: Header-row handling is intentionally **not** implemented in this baseline. It is the first workshop extension task.
-
-The repository is designed for workshop participants to extend with Cline in later tasks.
+The repository is designed for workshop participants to extend with Cline.
 
 It includes the workshop dataset and background material:
 
@@ -42,4 +40,4 @@ pytest
 
 ## Workshop context
 
-This is an educational demo repository. Participants will gradually add new cleaning features during exercises, guided by `TASKS.md`.
+This is an educational demo repository. Participants will gradually add new cleaning features during exercises, guided by `TASKS_INTERACTIVE.html`.
