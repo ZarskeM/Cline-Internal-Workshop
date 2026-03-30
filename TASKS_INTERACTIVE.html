@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workshop Tasks — Interactive Checklist</title>
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --text: #1f2a37;
+        --muted: #6b7280;
+        --accent: #2f6fed;
+        --accent-soft: #dbe8ff;
+        --done-bg: #eef1f6;
+        --done-text: #7a8699;
+        --danger: #d14343;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, #eff4ff 0%, var(--bg) 180px);
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      .container {
+        width: min(1080px, 95vw);
+        margin: 1.5rem auto 3rem;
+      }
+
+      .hero {
+        background: var(--card);
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 1.1rem 1.25rem;
+        box-shadow: 0 8px 30px rgba(16, 24, 40, 0.06);
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 1.45rem;
+        margin: 0 0 0.3rem;
+      }
+
+      h2 {
+        margin: 1.1rem 0 0.6rem;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin: 0.25rem 0;
+        line-height: 1.5;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .files {
+        margin: 0.65rem 0 0.25rem;
+        padding-left: 1.1rem;
+      }
+
+      .files code,
+      .task-card code {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.12rem 0.34rem;
+        font-size: 0.86em;
+      }
+
+      .progress-wrap {
+        margin-top: 0.85rem;
+      }
+
+      .progress-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        align-items: center;
+        font-size: 0.92rem;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 10px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        overflow: hidden;
+        margin-top: 0.35rem;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #2f6fed, #28a7de);
+        width: 0;
+        transition: width 0.18s ease;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+      }
+
+      button {
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #111827;
+        border-radius: 8px;
+        padding: 0.45rem 0.72rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      button:hover {
+        background: #f9fafb;
+      }
+
+      .section-title {
+        margin: 1.3rem 0 0.6rem;
+        font-size: 1.03rem;
+        color: #334155;
+      }
+
+      .task-grid {
+        display: grid;
+        gap: 0.72rem;
+      }
+
+      .task-card {
+        background: var(--card);
+        border: 1px solid #dbe3ef;
+        border-radius: 12px;
+        padding: 0.8rem 0.9rem;
+        box-shadow: 0 4px 18px rgba(17, 24, 39, 0.05);
+      }
+
+      .task-card.is-done {
+        background: var(--done-bg);
+        border-color: #cfd8e5;
+      }
+
+      .task-card.locked {
+        opacity: 0.82;
+        border-style: dashed;
+        border-color: #f3b4b4;
+        background:
+          linear-gradient(0deg, rgba(255, 245, 245, 0.95), rgba(255, 245, 245, 0.95)),
+          var(--card);
+      }
+
+      .task-card.pulse {
+        animation: taskPulse 1.1s ease;
+      }
+
+      .task-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        cursor: pointer;
+      }
+
+      .task-checkbox {
+        margin-top: 0.26rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .task-title {
+        font-weight: 700;
+        font-size: 1.02rem;
+      }
+
+      .task-meta {
+        margin-top: 0.55rem;
+        color: #334155;
+      }
+
+      .task-meta p {
+        margin: 0.24rem 0;
+      }
+
+      .task-meta ul {
+        margin: 0.28rem 0 0.18rem 1.15rem;
+        padding: 0;
+      }
+
+      .task-card.is-done .strike {
+        color: var(--done-text);
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+      }
+
+      details {
+        margin-top: 0.6rem;
+        border-top: 1px dashed #d5deeb;
+        padding-top: 0.5rem;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #1d4ed8;
+      }
+
+      details .hint {
+        margin-top: 0.45rem;
+        color: #334155;
+      }
+
+      .flow {
+        margin: 0.55rem 0 0.15rem 1.05rem;
+        padding: 0;
+      }
+
+      .expert {
+        margin-top: 1.2rem;
+        border: 2px solid #ffb1b1;
+        background: #fff7f7;
+      }
+
+      .expert h3 {
+        margin: 0 0 0.4rem;
+        color: var(--danger);
+        font-size: 1.07rem;
+      }
+
+      .expert-banner {
+        display: inline-block;
+        margin-top: 0.1rem;
+        margin-bottom: 0.3rem;
+        background: #ffe3e3;
+        border: 1px solid #ffb3b3;
+        color: #8f1d1d;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.2rem 0.58rem;
+        letter-spacing: 0.02em;
+      }
+
+      .lock-note {
+        margin-top: 0.65rem;
+        margin-bottom: 0.15rem;
+        padding: 0.48rem 0.58rem;
+        border-radius: 8px;
+        border: 1px solid #f7c97c;
+        background: #fff7e7;
+        color: #8a5b16;
+        font-size: 0.87rem;
+      }
+
+      .modal-backdrop[hidden] {
+        display: none !important;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        background: rgba(8, 15, 31, 0.5);
+        backdrop-filter: blur(8px);
+        animation: fadeIn 0.2s ease;
+      }
+
+      .modal-card {
+        position: relative;
+        width: min(690px, 95vw);
+        border-radius: 18px;
+        padding: 1rem 1.05rem 0.95rem;
+        overflow: hidden;
+        border: 1px solid #c7d8fb;
+        background: linear-gradient(145deg, #f8fbff, #edf3ff);
+        box-shadow: 0 30px 80px rgba(7, 17, 37, 0.35);
+        animation: popIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .modal-card.final {
+        border-color: #97e2b3;
+        background: linear-gradient(145deg, #f2fff7, #e5faef);
+      }
+
+      .modal-kicker {
+        display: inline-block;
+        margin-bottom: 0.35rem;
+        padding: 0.2rem 0.56rem;
+        border-radius: 999px;
+        border: 1px solid #aec8fb;
+        background: #e5efff;
+        color: #284b9d;
+        font-weight: 700;
+        font-size: 0.77rem;
+        letter-spacing: 0.03em;
+      }
+
+      .modal-card.final .modal-kicker {
+        border-color: #99e2b8;
+        background: #def7e8;
+        color: #1f7a46;
+      }
+
+      .modal-title {
+        margin: 0.08rem 0 0.35rem;
+        font-size: 1.36rem;
+        line-height: 1.25;
+      }
+
+      .modal-body {
+        margin: 0.2rem 0 0.45rem;
+        color: #334155;
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.55rem;
+        margin-top: 0.75rem;
+      }
+
+      .modal-btn-primary {
+        border: 1px solid #2f6fed;
+        background: linear-gradient(180deg, #3a79f8, #2f6fed);
+        color: white;
+        font-weight: 600;
+      }
+
+      .modal-btn-primary:hover {
+        background: linear-gradient(180deg, #4a84f9, #3c73df);
+      }
+
+      .sparkles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .sparkles span {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        opacity: 0.65;
+        background: #9cbcff;
+        animation: floatSparkle 2.4s ease-in-out infinite;
+      }
+
+      .sparkles span:nth-child(1) {
+        top: 22%;
+        left: 8%;
+      }
+
+      .sparkles span:nth-child(2) {
+        top: 12%;
+        right: 11%;
+        width: 8px;
+        height: 8px;
+        animation-delay: 0.25s;
+      }
+
+      .sparkles span:nth-child(3) {
+        top: 64%;
+        left: 16%;
+        width: 7px;
+        height: 7px;
+        animation-delay: 0.5s;
+      }
+
+      .sparkles span:nth-child(4) {
+        top: 70%;
+        right: 16%;
+        animation-delay: 0.9s;
+      }
+
+      .sparkles span:nth-child(5) {
+        top: 35%;
+        right: 34%;
+        width: 6px;
+        height: 6px;
+        animation-delay: 1.2s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes popIn {
+        from {
+          transform: translateY(18px) scale(0.97);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes floatSparkle {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.45;
+        }
+        50% {
+          transform: translateY(-10px);
+          opacity: 0.95;
+        }
+      }
+
+      @keyframes taskPulse {
+        0% {
+          box-shadow: 0 0 0 rgba(53, 109, 233, 0);
+        }
+        35% {
+          box-shadow: 0 0 0 7px rgba(53, 109, 233, 0.16);
+        }
+        100% {
+          box-shadow: 0 0 0 rgba(53, 109, 233, 0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section class="hero">
+        <h1>Workshop Tasks — Interactive Checklist</h1>
+        <p>
+          Build an Excel data cleaner for the Campylobacter supplemental dataset.
+          Mark tasks as done while you progress.
+        </p>
+        <p class="small">
+          Done state is saved in your browser (localStorage) and can be toggled at any
+          time.
+        </p>
+
+        <ul class="files">
+          <li><code>sample_data/Tab.S1_Sample_overview.xlsx</code></li>
+          <li><code>sample_data/s12864-024-10014-w.pdf</code></li>
+        </ul>
+
+        <h2>Recommended Cline workflow order</h2>
+        <ol class="flow">
+          <li>Start with targeted <code>@file</code> / <code>@folder</code> context</li>
+          <li>Use Plan Mode when behavior is ambiguous</li>
+          <li>Use Memory Bank once conventions stabilize</li>
+          <li>Use subagents for multi-stream analysis/refactor</li>
+          <li>Use deep-planning for final integration work</li>
+        </ol>
+
+        <div class="progress-wrap">
+          <div class="progress-head">
+            <strong id="progressLabel">Progress: 0 / 11 tasks done</strong>
+            <span class="small" id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button id="expandAll" type="button">Expand all details</button>
+          <button id="collapseAll" type="button">Collapse all details</button>
+          <button id="resetAll" type="button">Reset all checkboxes</button>
+        </div>
+      </section>
+
+      <h2 class="section-title">Core Tasks</h2>
+      <section class="task-grid">
+        <article class="task-card" id="task-1">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-1" />
+            <span class="task-title strike">Task 1 — Header row selection and application</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> note rows above true headers make previews hard to interpret.</p>
+            <p><strong>Outcome:</strong> stable schema baseline for later transforms.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              In the original file, the first two rows are title/info rows, and the
+              actual header row is at index <strong>2</strong> (0-based), where you see
+              names like <code>BioProject No.</code>, <code>Country of origin</code>,
+              <code>isolation source</code>, <code>Species</code>, and
+              <code>Res profile [EUCAMP2]</code>.
+              <br /><br />
+              Implement a header-row selector and test:
+              <ul>
+                <li><strong>Wrong choice:</strong> row 0 gives noisy names like <code>Unnamed: 1</code>.</li>
+                <li><strong>Correct choice:</strong> row 2 gives meaningful analysis columns.</li>
+              </ul>
+              Also sanitize duplicate/blank header names safely.
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-2">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-2" />
+            <span class="task-title strike">Task 2 — Manual column exclusion</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> helper/meta columns add noise.</p>
+            <p><strong>Outcome:</strong> focused dataset for analysis and export.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Add multiselect to remove columns from preview and exported data. Make
+              behavior explicit and consistent between UI and output file.
+              <br /><br />
+              Dataset-grounded example of a column that is often useful to exclude in a
+              cleaner view:
+              <ul>
+                <li><code>Alias</code> (mostly empty)</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-3">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-3" />
+            <span class="task-title strike">Task 3 — Empty column handling (use Plan Mode)</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> empty columns clutter output.</p>
+            <p><strong>Outcome:</strong> deterministic removal of truly empty columns.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Decide what “empty” means (<code>NaN</code>, blank strings,
+              whitespace-only, placeholder tokens) and add a toggle to remove those
+              columns with user-visible feedback.
+              <br /><br />
+              In this dataset, several columns are nearly empty, e.g.
+              <code>RpsL_K88R</code>, <code>cat-TC</code>,
+              <code>amr genes plasmid localization</code>,
+              <code>tet(W)</code>.
+              Use them to validate that your empty-column removal behaves as intended.
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-4">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-4" />
+            <span class="task-title strike">Task 4 — Split a column by custom separator (use Plan Mode)</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> multi-value cells reduce machine readability.</p>
+            <p><strong>Outcome:</strong> one value concept per column (e.g., separate <code>host</code> and <code>matrix</code> fields) for reliable filtering and grouping.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Let users choose source column, delimiter, and output names. Handle
+              uneven split lengths safely and document naming collision behavior.
+              <br /><br />
+              Concrete dataset example:
+              <ul>
+                <li>source column: <code>isolation source</code></li>
+                <li>input values: <code>broiler, meat</code> / <code>broiler, cecum</code></li>
+                <li>delimiter: comma</li>
+                <li>output columns: <code>host</code> and <code>matrix</code></li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-5">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-5" />
+            <span class="task-title strike">Task 5 — Expand code-like values to indicator columns</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> code lists in one cell are hard to filter directly.</p>
+            <p><strong>Outcome:</strong> explicit indicator columns (e.g., <code>has_CIP</code>, <code>has_NAL</code>) that enable reproducible filtering and quick summaries.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Detect codes in a selected source column and generate deterministic,
+              collision-safe indicator columns. Decide whether to keep the original column.
+              <br /><br />
+              Concrete dataset example:
+              <ul>
+                <li>source column: <code>Res profile [EUCAMP2]</code></li>
+                <li>row value: <code>CIP, ERY, NAL, TET</code></li>
+                <li>generated indicators: <code>has_CIP=1</code>, <code>has_ERY=1</code>, <code>has_NAL=1</code>, <code>has_TET=1</code></li>
+                <li>for <code>sensitive</code>: all resistance indicators should be 0</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-6">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-6" />
+            <span class="task-title strike">Task 6 — Add row filtering controls</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> users need scoped subsets quickly.</p>
+            <p><strong>Outcome:</strong> interactive row-level inclusion/exclusion before export.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Implement a compact operator set (equals, contains, empty/not-empty,
+              etc.) and show row-count feedback as rules are applied.
+              <br /><br />
+              Concrete dataset examples:
+              <ul>
+                <li><code>Country of origin = Germany</code></li>
+                <li><code>Species contains Campylobacter coli</code></li>
+                <li><code>Res profile [EUCAMP2] contains CIP</code></li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-7">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-7" />
+            <span class="task-title strike">Task 7 — Persist cleaning conventions with Memory Bank</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> repeated decisions drift across sessions.</p>
+            <p><strong>Outcome:</strong> reproducible cleaning conventions.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Store rules for empty-like tokens, naming style, and default include/exclude
+              behavior. Apply these conventions consistently in later tasks.
+              <br /><br />
+              Example convention set for this file:
+              <ul>
+                <li>Trim whitespace after splitting <code>isolation source</code></li>
+                <li>Indicator naming convention: <code>has_&lt;CODE&gt;</code></li>
+                <li>Treat placeholder values like <code>NaN</code> and blanks as empty</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-8">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-8" />
+            <span class="task-title strike">Task 8 — Use subagents for analysis and refactor</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> growing feature set tangles UI and transformation flow.</p>
+            <p><strong>Outcome:</strong> clearer architecture and less fragile state.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Use at least two independent analysis tracks (e.g., transform pipeline vs UI
+              state) and consolidate into one refactor plan with one concrete implementation.
+              <br /><br />
+              Suggested subagent split for this dataset:
+              <ul>
+                <li>Subagent A: header/split/indicator transformation order and edge cases</li>
+                <li>Subagent B: Streamlit state flow for selected sheet, config, and preview updates</li>
+                <li>Subagent C: export parity checks with representative rows (e.g., CIP/NAL/TET cases)</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-9">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-9" />
+            <span class="task-title strike">Task 9 — Final integration with deep planning: cleaned Excel export</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> final output must be shareable and reusable.</p>
+            <p><strong>Outcome:</strong> downloadable cleaned workbook aligned with UI state.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Plan transform ordering, export payload (cleaned-only vs cleaned + log sheet),
+              and confirm export content equals what users see in cleaned preview.
+              <br /><br />
+              Validate with concrete rows, for example:
+              <ul>
+                <li><code>isolation source = broiler, cecum</code> should become split host/matrix values if Task 4 is enabled</li>
+                <li><code>Res profile [EUCAMP2] = CIP, NAL, TET</code> should match indicator columns if Task 5 is enabled</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="task-card" id="task-10">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-10" />
+            <span class="task-title strike">Task 10 — Final quality gate</span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Problem:</strong> workshop output must be stable and demonstrable.</p>
+            <p><strong>Outcome:</strong> tested app + updated docs.</p>
+          </div>
+          <details>
+            <summary>Detailed guidance</summary>
+            <div class="hint">
+              Ensure <code>pytest</code> passes, run an end-to-end manual app flow with the
+              sample workbook, and align README with final implemented capabilities.
+              <br /><br />
+              Minimum manual check on this dataset:
+              <ul>
+                <li>upload <code>Tab.S1_Sample_overview.xlsx</code></li>
+                <li>set header row to index 2</li>
+                <li>apply at least one split and one indicator expansion</li>
+                <li>download cleaned Excel and verify transformed columns are present</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </section>
+
+      <h2 class="section-title">Expert Challenge</h2>
+      <section class="task-grid">
+        <article class="task-card expert" id="task-11">
+          <label class="task-head">
+            <input class="task-checkbox" type="checkbox" data-task-id="task-11" disabled />
+            <span>
+              <span class="expert-banner">VERY HARD CHALLENGE</span>
+              <span class="task-title strike">Task 11 — Migrate Streamlit cleaner to React + Python API backend</span>
+            </span>
+          </label>
+          <div class="task-meta strike">
+            <p><strong>Why hard:</strong> architecture migration (frontend + backend + contracts + e2e validation), not just a UI rewrite.</p>
+            <p><strong>Use:</strong> deep-planning, subagents (≥3 streams), browser-based end-to-end checks.</p>
+          </div>
+          <p class="lock-note" id="task11LockNote">🔒 Complete Tasks 1–10 to unlock this expert challenge.</p>
+          <details>
+            <summary>Detailed implementation scope</summary>
+            <div class="hint">
+              <ul>
+                <li>Extract cleaner logic to backend services.</li>
+                <li>Define API endpoints (<code>/upload</code>, <code>/preview</code>, <code>/clean</code>, <code>/export/{id}</code>).</li>
+                <li>Build React UI with parity flow: upload → sheet select → clean config → preview → export.</li>
+                <li>Add backend, API, and frontend tests.</li>
+                <li>Run browser e2e validation against <code>Tab.S1_Sample_overview.xlsx</code>.</li>
+              </ul>
+              Dataset-specific parity checks to include in browser tests:
+              <ul>
+                <li>header-row selection to index 2 produces named columns like <code>BioProject No.</code> and <code>Res profile [EUCAMP2]</code></li>
+                <li><code>broiler, meat</code> split behavior is preserved</li>
+                <li><code>CIP, ERY, NAL, TET</code> indicator expansion matches backend output</li>
+                <li>downloaded workbook contains the same transformed values visible in preview</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="unlockModal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+        <div class="sparkles" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="modal-kicker">MILESTONE UNLOCKED</div>
+        <h3 class="modal-title" id="unlockTitle">Well done! 🎉</h3>
+        <p class="modal-body">
+          You’re already quite good in using Cline. There is one last challenge
+          waiting for you — and it is extra hard: <strong>Task 11</strong>.
+        </p>
+        <p class="small">Task 11 is now unlocked.</p>
+        <div class="modal-buttons">
+          <button type="button" class="modal-btn-primary" id="unlockOkay">
+            Okay, show me Task 11
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="finalModal" hidden>
+      <div class="modal-card final" role="dialog" aria-modal="true" aria-labelledby="finalTitle">
+        <div class="sparkles" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="modal-kicker">ALL TASKS COMPLETED</div>
+        <h3 class="modal-title" id="finalTitle">Congratulations! 🏆</h3>
+        <p class="modal-body">
+          You have solved all workshop tasks successfully — including the expert
+          challenge. You are truly becoming an expert in using Cline.
+        </p>
+        <div class="modal-buttons">
+          <button type="button" class="modal-btn-primary" id="finalOkay">
+            Awesome
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "workshop-task-checklist-v2";
+
+      const checkboxes = [...document.querySelectorAll(".task-checkbox")];
+      const detailsNodes = [...document.querySelectorAll("details")];
+      const progressLabel = document.getElementById("progressLabel");
+      const progressPercent = document.getElementById("progressPercent");
+      const progressFill = document.getElementById("progressFill");
+      const task11Card = document.getElementById("task-11");
+      const task11Checkbox = document.querySelector('[data-task-id="task-11"]');
+      const task11LockNote = document.getElementById("task11LockNote");
+
+      const unlockModal = document.getElementById("unlockModal");
+      const finalModal = document.getElementById("finalModal");
+      const unlockOkayBtn = document.getElementById("unlockOkay");
+      const finalOkayBtn = document.getElementById("finalOkay");
+
+      const TASK_IDS = checkboxes.map((cb) => cb.dataset.taskId);
+      const FIRST_TEN_IDS = TASK_IDS.filter((id) => id !== "task-11");
+      const FINAL_TASK_ID = "task-11";
+
+      function defaultState() {
+        return {
+          checks: {},
+          milestones: {
+            unlockSeen: false,
+            finalSeen: false,
+          },
+        };
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultState();
+
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return defaultState();
+
+          // Backward compatibility with old shape: { task-1: true, ... }
+          if (!Object.prototype.hasOwnProperty.call(parsed, "checks")) {
+            return {
+              checks: parsed,
+              milestones: {
+                unlockSeen: false,
+                finalSeen: false,
+              },
+            };
+          }
+
+          return {
+            checks: parsed.checks || {},
+            milestones: {
+              unlockSeen: Boolean(parsed.milestones?.unlockSeen),
+              finalSeen: Boolean(parsed.milestones?.finalSeen),
+            },
+          };
+        } catch {
+          return defaultState();
+        }
+      }
+
+      const appState = loadState();
+
+      function syncChecksFromDom() {
+        checkboxes.forEach((cb) => {
+          appState.checks[cb.dataset.taskId] = cb.checked;
+        });
+      }
+
+      function saveState() {
+        syncChecksFromDom();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      }
+
+      function applyDoneStyle(cb) {
+        const card = cb.closest(".task-card");
+        card.classList.toggle("is-done", cb.checked);
+      }
+
+      function updateProgress() {
+        const total = checkboxes.length;
+        const done = checkboxes.filter((cb) => cb.checked).length;
+        const pct = Math.round((done / total) * 100);
+
+        progressLabel.textContent = `Progress: ${done} / ${total} tasks done`;
+        progressPercent.textContent = `${pct}%`;
+        progressFill.style.width = `${pct}%`;
+      }
+
+      function areFirstTenDone() {
+        return FIRST_TEN_IDS.every((id) => appState.checks[id]);
+      }
+
+      function isTask11Done() {
+        return Boolean(appState.checks[FINAL_TASK_ID]);
+      }
+
+      function updateTask11Lock() {
+        const unlocked = areFirstTenDone();
+
+        if (!unlocked && task11Checkbox.checked) {
+          task11Checkbox.checked = false;
+          appState.checks[FINAL_TASK_ID] = false;
+          applyDoneStyle(task11Checkbox);
+        }
+
+        task11Checkbox.disabled = !unlocked;
+        task11Card.classList.toggle("locked", !unlocked);
+        task11LockNote.hidden = unlocked;
+      }
+
+      function showModal(modalElement) {
+        modalElement.hidden = false;
+        document.body.classList.add("modal-open");
+      }
+
+      function hideModal(modalElement) {
+        modalElement.hidden = true;
+        if (unlockModal.hidden && finalModal.hidden) {
+          document.body.classList.remove("modal-open");
+        }
+      }
+
+      function focusTask11() {
+        task11Card.scrollIntoView({ behavior: "smooth", block: "center" });
+        task11Card.classList.add("pulse");
+        setTimeout(() => task11Card.classList.remove("pulse"), 1300);
+      }
+
+      function evaluateMilestones() {
+        const firstTenDone = areFirstTenDone();
+        updateTask11Lock();
+
+        if (firstTenDone && !appState.milestones.unlockSeen) {
+          appState.milestones.unlockSeen = true;
+          saveState();
+          showModal(unlockModal);
+        }
+
+        if (firstTenDone && isTask11Done() && !appState.milestones.finalSeen) {
+          appState.milestones.finalSeen = true;
+          saveState();
+          showModal(finalModal);
+        }
+      }
+
+      function hydrateFromStorage() {
+        checkboxes.forEach((cb) => {
+          const id = cb.dataset.taskId;
+          cb.checked = Boolean(appState.checks[id]);
+          applyDoneStyle(cb);
+        });
+
+        updateProgress();
+        updateTask11Lock();
+      }
+
+      checkboxes.forEach((cb) => {
+        cb.addEventListener("change", () => {
+          applyDoneStyle(cb);
+          saveState();
+          updateProgress();
+          evaluateMilestones();
+        });
+      });
+
+      unlockOkayBtn.addEventListener("click", () => {
+        hideModal(unlockModal);
+        focusTask11();
+      });
+
+      finalOkayBtn.addEventListener("click", () => {
+        hideModal(finalModal);
+      });
+
+      document.getElementById("expandAll").addEventListener("click", () => {
+        detailsNodes.forEach((node) => (node.open = true));
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        detailsNodes.forEach((node) => (node.open = false));
+      });
+
+      document.getElementById("resetAll").addEventListener("click", () => {
+        if (!window.confirm("Reset all task checkboxes?")) return;
+
+        checkboxes.forEach((cb) => {
+          cb.checked = false;
+          applyDoneStyle(cb);
+        });
+
+        appState.checks = {};
+        appState.milestones.unlockSeen = false;
+        appState.milestones.finalSeen = false;
+
+        saveState();
+        updateProgress();
+        updateTask11Lock();
+        hideModal(unlockModal);
+        hideModal(finalModal);
+      });
+
+      hydrateFromStorage();
+      evaluateMilestones();
+    </script>
+  </body>
+</html>

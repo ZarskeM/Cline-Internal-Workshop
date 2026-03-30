@@ -1,0 +1,6 @@
+implementation_plan.md
+implementation_task_context.md
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
