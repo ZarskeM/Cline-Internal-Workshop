@@ -51,7 +51,7 @@ st.subheader("Raw worksheet preview")
 st.caption(
     "This is the worksheet exactly as loaded (no header-row correction yet)."
 )
-st.dataframe(get_preview(raw_df, max_rows=25), width="stretch")
+st.dataframe(get_preview(raw_df, max_rows=25), use_container_width=True)
 
 rows, cols = raw_df.shape
 left_col, right_col = st.columns(2)
