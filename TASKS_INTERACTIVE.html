@@ -470,7 +470,7 @@
 
         <div class="progress-wrap">
           <div class="progress-head">
-            <strong id="progressLabel">Progress: 0 / 11 tasks done</strong>
+            <strong id="progressLabel">Progress: 0 / 10 tasks done</strong>
             <span class="small" id="progressPercent">0%</span>
           </div>
           <div class="progress-bar" aria-hidden="true">
@@ -542,32 +542,7 @@
         <article class="task-card" id="task-3">
           <label class="task-head">
             <input class="task-checkbox" type="checkbox" data-task-id="task-3" />
-            <span class="task-title strike">Task 3 — Empty column handling (use Plan Mode)</span>
-          </label>
-          <div class="task-meta strike">
-            <p><strong>Problem:</strong> empty columns clutter output.</p>
-            <p><strong>Outcome:</strong> deterministic removal of truly empty columns.</p>
-          </div>
-          <details>
-            <summary>Detailed guidance</summary>
-            <div class="hint">
-              Decide what “empty” means (<code>NaN</code>, blank strings,
-              whitespace-only, placeholder tokens) and add a toggle to remove those
-              columns with user-visible feedback.
-              <br /><br />
-              In this dataset, several columns are nearly empty, e.g.
-              <code>RpsL_K88R</code>, <code>cat-TC</code>,
-              <code>amr genes plasmid localization</code>,
-              <code>tet(W)</code>.
-              Use them to validate that your empty-column removal behaves as intended.
-            </div>
-          </details>
-        </article>
-
-        <article class="task-card" id="task-4">
-          <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-4" />
-            <span class="task-title strike">Task 4 — Split a column by custom separator (use Plan Mode)</span>
+            <span class="task-title strike">Task 3 — Split a column by custom separator (use Plan Mode)</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> multi-value cells reduce machine readability.</p>
@@ -590,10 +565,10 @@
           </details>
         </article>
 
-        <article class="task-card" id="task-5">
+        <article class="task-card" id="task-4">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-5" />
-            <span class="task-title strike">Task 5 — Expand code-like values to indicator columns</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-4" />
+            <span class="task-title strike">Task 4 — Expand code-like values to indicator columns</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> code lists in one cell are hard to filter directly.</p>
@@ -616,10 +591,10 @@
           </details>
         </article>
 
-        <article class="task-card" id="task-6">
+        <article class="task-card" id="task-5">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-6" />
-            <span class="task-title strike">Task 6 — Add row filtering controls</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-5" />
+            <span class="task-title strike">Task 5 — Add row filtering controls</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> users need scoped subsets quickly.</p>
@@ -641,10 +616,10 @@
           </details>
         </article>
 
-        <article class="task-card" id="task-7">
+        <article class="task-card" id="task-6">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-7" />
-            <span class="task-title strike">Task 7 — Persist cleaning conventions with Memory Bank</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-6" />
+            <span class="task-title strike">Task 6 — Persist cleaning conventions with Memory Bank</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> repeated decisions drift across sessions.</p>
@@ -666,10 +641,10 @@
           </details>
         </article>
 
-        <article class="task-card" id="task-8">
+        <article class="task-card" id="task-7">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-8" />
-            <span class="task-title strike">Task 8 — Use subagents for analysis and refactor</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-7" />
+            <span class="task-title strike">Task 7 — Use subagents for analysis and refactor</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> growing feature set tangles UI and transformation flow.</p>
@@ -691,10 +666,10 @@
           </details>
         </article>
 
-        <article class="task-card" id="task-9">
+        <article class="task-card" id="task-8">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-9" />
-            <span class="task-title strike">Task 9 — Final integration with deep planning: cleaned Excel export</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-8" />
+            <span class="task-title strike">Task 8 — Final integration with deep planning: cleaned Excel export</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> final output must be shareable and reusable.</p>
@@ -708,17 +683,17 @@
               <br /><br />
               Validate with concrete rows, for example:
               <ul>
-                <li><code>isolation source = broiler, cecum</code> should become split host/matrix values if Task 4 is enabled</li>
-                <li><code>Res profile [EUCAMP2] = CIP, NAL, TET</code> should match indicator columns if Task 5 is enabled</li>
+                <li><code>isolation source = broiler, cecum</code> should become split host/matrix values if Task 3 is enabled</li>
+                <li><code>Res profile [EUCAMP2] = CIP, NAL, TET</code> should match indicator columns if Task 4 is enabled</li>
               </ul>
             </div>
           </details>
         </article>
 
-        <article class="task-card" id="task-10">
+        <article class="task-card" id="task-9">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-10" />
-            <span class="task-title strike">Task 10 — Final quality gate</span>
+            <input class="task-checkbox" type="checkbox" data-task-id="task-9" />
+            <span class="task-title strike">Task 9 — Final quality gate</span>
           </label>
           <div class="task-meta strike">
             <p><strong>Problem:</strong> workshop output must be stable and demonstrable.</p>
@@ -744,19 +719,19 @@
 
       <h2 class="section-title">Expert Challenge</h2>
       <section class="task-grid">
-        <article class="task-card expert" id="task-11">
+        <article class="task-card expert" id="task-10">
           <label class="task-head">
-            <input class="task-checkbox" type="checkbox" data-task-id="task-11" disabled />
+            <input class="task-checkbox" type="checkbox" data-task-id="task-10" disabled />
             <span>
               <span class="expert-banner">VERY HARD CHALLENGE</span>
-              <span class="task-title strike">Task 11 — Migrate Streamlit cleaner to React + Python API backend</span>
+              <span class="task-title strike">Task 10 — Migrate Streamlit cleaner to React + Python API backend</span>
             </span>
           </label>
           <div class="task-meta strike">
             <p><strong>Why hard:</strong> architecture migration (frontend + backend + contracts + e2e validation), not just a UI rewrite.</p>
             <p><strong>Use:</strong> deep-planning, subagents (≥3 streams), browser-based end-to-end checks.</p>
           </div>
-          <p class="lock-note" id="task11LockNote">🔒 Complete Tasks 1–10 to unlock this expert challenge.</p>
+          <p class="lock-note" id="task10LockNote">🔒 Complete Tasks 1–9 to unlock this expert challenge.</p>
           <details>
             <summary>Detailed implementation scope</summary>
             <div class="hint">
@@ -789,12 +764,12 @@
         <h3 class="modal-title" id="unlockTitle">Well done! 🎉</h3>
         <p class="modal-body">
           You’re already quite good in using Cline. There is one last challenge
-          waiting for you — and it is extra hard: <strong>Task 11</strong>.
+          waiting for you — and it is extra hard: <strong>Task 10</strong>.
         </p>
-        <p class="small">Task 11 is now unlocked.</p>
+        <p class="small">Task 10 is now unlocked.</p>
         <div class="modal-buttons">
           <button type="button" class="modal-btn-primary" id="unlockOkay">
-            Okay, show me Task 11
+            Okay, show me Task 10
           </button>
         </div>
       </div>
@@ -827,9 +802,9 @@
       const progressLabel = document.getElementById("progressLabel");
       const progressPercent = document.getElementById("progressPercent");
       const progressFill = document.getElementById("progressFill");
-      const task11Card = document.getElementById("task-11");
-      const task11Checkbox = document.querySelector('[data-task-id="task-11"]');
-      const task11LockNote = document.getElementById("task11LockNote");
+      const task10Card = document.getElementById("task-10");
+      const task10Checkbox = document.querySelector('[data-task-id="task-10"]');
+      const task10LockNote = document.getElementById("task10LockNote");
 
       const unlockModal = document.getElementById("unlockModal");
       const finalModal = document.getElementById("finalModal");
@@ -837,8 +812,8 @@
       const finalOkayBtn = document.getElementById("finalOkay");
 
       const TASK_IDS = checkboxes.map((cb) => cb.dataset.taskId);
-      const FIRST_TEN_IDS = TASK_IDS.filter((id) => id !== "task-11");
-      const FINAL_TASK_ID = "task-11";
+      const FIRST_NINE_IDS = TASK_IDS.filter((id) => id !== "task-10");
+      const FINAL_TASK_ID = "task-10";
 
       function defaultState() {
         return {
@@ -909,26 +884,26 @@
         progressFill.style.width = `${pct}%`;
       }
 
-      function areFirstTenDone() {
-        return FIRST_TEN_IDS.every((id) => appState.checks[id]);
+      function areFirstNineDone() {
+        return FIRST_NINE_IDS.every((id) => appState.checks[id]);
       }
 
-      function isTask11Done() {
+      function isTask10Done() {
         return Boolean(appState.checks[FINAL_TASK_ID]);
       }
 
-      function updateTask11Lock() {
-        const unlocked = areFirstTenDone();
+      function updateTask10Lock() {
+        const unlocked = areFirstNineDone();
 
-        if (!unlocked && task11Checkbox.checked) {
-          task11Checkbox.checked = false;
+        if (!unlocked && task10Checkbox.checked) {
+          task10Checkbox.checked = false;
           appState.checks[FINAL_TASK_ID] = false;
-          applyDoneStyle(task11Checkbox);
+          applyDoneStyle(task10Checkbox);
         }
 
-        task11Checkbox.disabled = !unlocked;
-        task11Card.classList.toggle("locked", !unlocked);
-        task11LockNote.hidden = unlocked;
+        task10Checkbox.disabled = !unlocked;
+        task10Card.classList.toggle("locked", !unlocked);
+        task10LockNote.hidden = unlocked;
       }
 
       function showModal(modalElement) {
@@ -943,23 +918,23 @@
         }
       }
 
-      function focusTask11() {
-        task11Card.scrollIntoView({ behavior: "smooth", block: "center" });
-        task11Card.classList.add("pulse");
-        setTimeout(() => task11Card.classList.remove("pulse"), 1300);
+      function focusTask10() {
+        task10Card.scrollIntoView({ behavior: "smooth", block: "center" });
+        task10Card.classList.add("pulse");
+        setTimeout(() => task10Card.classList.remove("pulse"), 1300);
       }
 
       function evaluateMilestones() {
-        const firstTenDone = areFirstTenDone();
-        updateTask11Lock();
+        const firstNineDone = areFirstNineDone();
+        updateTask10Lock();
 
-        if (firstTenDone && !appState.milestones.unlockSeen) {
+        if (firstNineDone && !appState.milestones.unlockSeen) {
           appState.milestones.unlockSeen = true;
           saveState();
           showModal(unlockModal);
         }
 
-        if (firstTenDone && isTask11Done() && !appState.milestones.finalSeen) {
+        if (firstNineDone && isTask10Done() && !appState.milestones.finalSeen) {
           appState.milestones.finalSeen = true;
           saveState();
           showModal(finalModal);
@@ -974,7 +949,7 @@
         });
 
         updateProgress();
-        updateTask11Lock();
+        updateTask10Lock();
       }
 
       checkboxes.forEach((cb) => {
@@ -988,7 +963,7 @@
 
       unlockOkayBtn.addEventListener("click", () => {
         hideModal(unlockModal);
-        focusTask11();
+        focusTask10();
       });
 
       finalOkayBtn.addEventListener("click", () => {
@@ -1017,7 +992,7 @@
 
         saveState();
         updateProgress();
-        updateTask11Lock();
+        updateTask10Lock();
         hideModal(unlockModal);
         hideModal(finalModal);
       });
