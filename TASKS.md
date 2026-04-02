@@ -52,19 +52,7 @@ For every task, use this mini-process before saying "done":
   - excluded columns disappear from cleaned preview;
   - behavior is consistent in export-ready dataset.
 
-## Task 3 — Empty column handling (use Plan Mode)
-
-- **Cline workflow:** switch to **Plan Mode**, define explicit empty-value rules, then implement.
-- **Problem:** empty columns clutter output and confuse users.
-- **Reason:** hidden empty-value patterns can silently break assumptions in later transforms.
-- **Outcome:** deterministic cleanup behavior for truly empty columns.
-- **You must decide:** what counts as empty (`NaN`, empty strings, whitespace-only, placeholder tokens).
-- **Acceptance checks:**
-  - explicit behavior documented in code comments or docs;
-  - toggle for removing fully empty columns;
-  - visible feedback on which columns were removed.
-
-## Task 4 — Split a column by custom separator (use Plan Mode)
+## Task 3 — Split a column by custom separator (use Plan Mode)
 
 - **Cline workflow:** switch to **Plan Mode**, define split behavior and edge-case handling, then implement targeted edits.
 - **Problem:** multi-value cells need structural cleanup (e.g., `isolation source` values like `broiler, meat` or `broiler, cecum`).
@@ -77,7 +65,7 @@ For every task, use this mini-process before saying "done":
   - split works with inconsistent row shapes;
   - collision handling for generated column names is explicit.
 
-## Task 5 — Expand code-like values to indicator columns
+## Task 4 — Expand code-like values to indicator columns
 
 - **Cline workflow:** targeted `@file` references.
 - **Problem:** code lists are hard to filter/analyze directly (e.g., one cell in `Res profile [EUCAMP2]` contains `CIP, NAL, TET`).
@@ -90,7 +78,7 @@ For every task, use this mini-process before saying "done":
   - generated indicator columns with deterministic naming;
   - clear handling of empty or unknown code cells.
 
-## Task 6 — Add row filtering controls
+## Task 5 — Add row filtering controls
 
 - **Cline workflow:** targeted `@file` references.
 - **Problem:** users need to keep/remove rows based on quick rules.
@@ -102,7 +90,7 @@ For every task, use this mini-process before saying "done":
   - filtered row count feedback;
   - filters apply consistently before export.
 
-## Task 7 — Persist cleaning conventions with Memory Bank
+## Task 6 — Persist cleaning conventions with Memory Bank
 
 - **Cline workflow:** **Memory Bank** + targeted references.
 - **Problem:** repeated decisions drift over time (naming, placeholder handling, trim rules).
@@ -114,7 +102,7 @@ For every task, use this mini-process before saying "done":
   - implementation follows stored conventions;
   - task notes show where Memory Bank helped avoid inconsistency.
 
-## Task 8 — Use subagents for analysis and refactor
+## Task 7 — Use subagents for analysis and refactor
 
 - **Cline workflow:** **subagents** for independent analysis streams.
 - **Problem:** as features grow, transform flow and UI state can become tangled.
@@ -126,7 +114,7 @@ For every task, use this mini-process before saying "done":
   - consolidate findings into one refactor plan;
   - implement one concrete refactor (e.g., pipeline module extraction or clearer state model).
 
-## Task 9 — Final integration with deep planning: cleaned Excel export
+## Task 8 — Final integration with deep planning: cleaned Excel export
 
 - **Cline workflow:** start with **/deep-planning**.
 - **Problem:** final output must be reusable outside the app.
@@ -138,7 +126,7 @@ For every task, use this mini-process before saying "done":
   - optional transformation-log sheet if implemented;
   - export content matches cleaned preview state.
 
-## Task 10 — Final quality gate
+## Task 9 — Final quality gate
 
 - **Cline workflow:** targeted references + focused verification.
 - **Problem:** workshop output should be stable and demonstrable.
@@ -154,7 +142,7 @@ For every task, use this mini-process before saying "done":
 
 # 🚨 VERY HARD CHALLENGE TASK (EXPERT LEVEL)
 
-## Task 11 — Migrate the Streamlit cleaner into a React app with Python API backend
+## Task 10 — Migrate the Streamlit cleaner into a React app with Python API backend
 
 - **Why this is very hard:** this is not a UI-only rewrite. It is an architecture migration from a single Python Streamlit app into a multi-part system (frontend + backend + API contracts + browser-tested flows).
 - **Goal:** keep feature parity with the cleaner workflow while delivering a modern React frontend and stable Python backend for data processing.
